@@ -25,7 +25,9 @@ Inside our *Iterations* section, we have our prototypes. In this section we'll d
 In out first prototype, we have a cardbord holster that would house an IR remote. This prototype was designed
 to take emit an IR signal to an IR receiver where the other player would be.  
 
-In the second iteration, we have a more complex version that houses
+In the second iteration, we have a more complex version that houses an IR emitter remote and an IR sensor. 
+Each gun has an Arduino that is used to keep track of the logic of the game and as well as the speaker for
+the game and LEDs and lazers for visual effects.
 
 
 ## Iterations
