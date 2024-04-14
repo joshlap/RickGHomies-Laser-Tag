@@ -1,0 +1,104 @@
+#include <IRremote.h>
+const int RECV_PIN = 7;
+const int BUZZ_PIN = 3; 
+
+const int three=11; 
+const int two=10; 
+const int one=9;
+ 
+int lives=2;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+unsigned long timer = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(BUZZ_PIN, OUTPUT); 
+  pinMode(three,OUTPUT);
+  pinMode(two,OUTPUT);
+  pinMode(one,OUTPUT);
+  irrecv.enableIRIn();  // Start the receiver
+  irrecv.blink13(true);
+  digitalWrite(three,LOW);
+  digitalWrite(two,HIGH);
+  digitalWrite(one,HIGH);
+}
+
+void loop() {
+  if (irrecv.decode(&results)) {
+    Serial.println(results.value, HEX);  // Print the IR code in HEX
+
+    timer = millis(); 
+    if(lives>0){
+      tone(BUZZ_PIN, 2400, 100);  // First tone, higher pitch, 100 ms duration
+      delay(120);                 // Short delay between tones
+      tone(BUZZ_PIN, 1800, 100);   // Second tone, slightly lower pitch
+      delay(240);                 // Short delay
+      tone(BUZZ_PIN, 1400, 150);   // Third tone, lower pitch, slightly longer duration
+      delay(120);                 // Short delay
+      noTone(BUZZ_PIN);  
+      delay(120);                 // Short delay
+      // Stop sound
+      tone(BUZZ_PIN, 1400, 150);   // Third tone, lower pitch, slightly longer duration
+      delay(120); 
+      tone(BUZZ_PIN, 1200, 150);   // Third tone, lower pitch, slightly longer duration
+      delay(240);                 // Short delay
+      tone(BUZZ_PIN, 1100, 150);   // Third tone, lower pitch, slightly longer duration
+      lives=lives-1; 
+    }  
+     else{   
+        
+      for(int i=0; i<20; i++){ 
+        tone(BUZZ_PIN, 2739,400);  // First tone, higher pitch, 100 ms duration
+        digitalWrite(three,HIGH);
+        digitalWrite(two,HIGH);
+        digitalWrite(one,LOW); 
+        delay(30);                 // Short delay
+        noTone(BUZZ_PIN);
+        digitalWrite(three,HIGH);
+        digitalWrite(two,HIGH);
+        digitalWrite(one,HIGH); 
+        delay(30);                 // Short delay
+
+      }
+      tone(BUZZ_PIN, 1100, 150);   // Third tone, lower pitch, slightly longer duration
+      delay(240);     
+      tone(BUZZ_PIN, 1300, 150);   // Third tone, lower pitch, slightly longer duration
+      delay(240);  
+      noTone(BUZZ_PIN);  
+      delay(120); 
+      tone(BUZZ_PIN, 1300, 150);   // Third tone, lower pitch, slightly longer duration
+      delay(240); 
+      tone(BUZZ_PIN, 1500, 150);   // Third tone, lower pitch, slightly longer duration
+      delay(240);  
+      digitalWrite(three,LOW);
+      digitalWrite(two,HIGH);
+      digitalWrite(one,HIGH);
+      lives=2;
+    }
+    if(lives==2){ 
+       digitalWrite(three,LOW);
+      digitalWrite(two,HIGH);
+      digitalWrite(one,HIGH);
+    }
+    if(lives==1){ 
+       digitalWrite(three,HIGH);
+       digitalWrite(two,LOW);
+       digitalWrite(one,HIGH);   
+    }
+
+    else if(lives==0){ 
+       digitalWrite(three,HIGH);
+       digitalWrite(two,HIGH);
+       digitalWrite(one,LOW);      
+    }
+
+   
+    irrecv.resume();  // Receive the next value 
+
+  }
+
+  if (millis() - timer >4000) {  // Shorter time before shutting off the tone
+    noTone(BUZZ_PIN);            // Stop sound
+  }
+}
