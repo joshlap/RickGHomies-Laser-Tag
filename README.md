@@ -1,7 +1,7 @@
 # RickGHomies-Laser-Tag
 
 ## Meet The Team
-![The Team](/RickGHomies-Laser-Tag/Team.jpg)
+![The Team](./Team.jpg)
 Ryan Irwandy
 Rana Singh
 Josh Lapidario
